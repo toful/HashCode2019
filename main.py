@@ -10,8 +10,8 @@ def read_file(filename):
 
     IDtagtoString = {}  # diccionari per a traduir ID de tags a el seu nom
 
-    ID = 1  # comptador intern de ID per cada fotos
-    IDtags = 1  # comptador intern de IDS per tags de fotos
+    ID = 0  # comptador intern de ID per cada fotos
+    IDtags = 0  # comptador intern de IDS per tags de fotos
     IDtagslist = []  # llista temporal de IDs de tags
 
     with codecs.open(filename, encoding='utf-8', mode='r') as fileref:
@@ -58,11 +58,7 @@ def read_file(filename):
                 else:
                     Vertical_list.append([i, IDphoto_tags[i][1]])
 
-            return Vertical_list, Horizontal_list, tags_IDphoto, IDtagtoString
-
-            print(IDphoto_tags)
-            print(tags_IDphoto)
-            print(IDtagtoString)
+        return Vertical_list, Horizontal_list, tags_IDphoto, IDtagtoString
 
 
 def merge_vertical_in_slide(verticals):
@@ -137,9 +133,9 @@ def get_best_slide(sl, to_max):
 
 def write_results( result, result_file ):
     file = open(result_file, "w")
-    file.write( len(result) )
+    file.write( str(len(result)) )
     for elem in result:
-        file.write( elem[0] )
+        file.write( "\n"+str(elem[0]) )
     file.close()
 
 #files = [ "a_example.txt",  "b_lovely_landscapes.txt",  "c_memorable_moments.txt",  "d_pet_pictures.txt",  "e_shiny_selfies.txt" ]
@@ -152,4 +148,5 @@ for file in files:
     vertical_slides = merge_vertical_in_slide(verticals)
     horizontals += vertical_slides
     result = slides( horizontals )
+    write_results( result, "result.out")
 
