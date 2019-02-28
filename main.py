@@ -4,6 +4,7 @@
 import codecs
 import random
 
+
 def read_file(filename):
     IDphoto_tags = {}  # diccionari de ID a tags
     tags_IDphoto = {}  # dciccionari de tags a ID
@@ -137,20 +138,21 @@ def get_best_slide(sl, to_max):
 
 def write_results(result, result_file):
     file = open(result_file, "w")
-    file.write( str(len(result)) )
+    file.write(str(len(result)))
     for elem in result:
-        file.write( "\n"+str(elem[0]) )
+        file.write("\n" + str(elem[0]))
     file.close()
 
 
 # files = [ "a_example.txt",  "b_lovely_landscapes.txt",  "c_memorable_moments.txt",  "d_pet_pictures.txt",  "e_shiny_selfies.txt" ]
 files = ["a_example.txt"]
 
-#read_files('a_example.txt')
+# read_files('a_example.txt')
 
 for file in files:
     verticals, horizontals, tags_dir, traduction_dir = read_file(file)
     vertical_slides = merge_vertical_in_slide(verticals)
     horizontals += vertical_slides
-    result, punct = slides( horizontals )
-    write_results( result, "result.out")
+    result, punct = slides(horizontals)
+    write_results(result, "result.out")
+    print(punct)
