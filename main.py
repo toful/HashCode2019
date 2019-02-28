@@ -54,7 +54,7 @@ with codecs.open('a_example.txt', encoding='utf-8', mode='r') as fileref:
     print(IDtagtoString)
 
 
-def merge_vertical_in_slide( verticals ):
+def merge_vertical_in_slide(verticals):
     double_slides = []
     if len(verticals) >= 2:
         for elem1 in verticals:
@@ -66,12 +66,13 @@ def merge_vertical_in_slide( verticals ):
                 if score > bestScore:
                     bestScore = score
                     bestPhoto = elem2
-            double_slides += [(str(elem1[0]) + " " + str(bestPhoto[0]), elem1[1] + list(set(bestPhoto[1]) - set(elem1[1])))]
+            double_slides += [
+                (str(elem1[0]) + " " + str(bestPhoto[0]), elem1[1] + list(set(bestPhoto[1]) - set(elem1[1])))]
             verticals.remove(bestPhoto)
             if len(verticals) < 2:
                 break
     if len(verticals) == 1:
-        double_slides += [ ( str( verticals[0][0] ), verticals[0][1] )]
+        double_slides += [(str(verticals[0][0]), verticals[0][1])]
     return double_slides
 
 
@@ -85,11 +86,13 @@ def slides(sl):
     rand_int = random.randint(0, len(sl) - 1)
     ordered.append(sl[rand_int])
     sl.remove(ordered[0])
+    total_punct = 0
     while len(sl) != 0:
-        slide = get_best_slide(sl, ordered[len(ordered) - 1])
+        slide, punct = get_best_slide(sl, ordered[len(ordered) - 1])
+        total_punct += punct
         ordered.append(slide)
         sl.remove(slide)
-    return ordered
+    return ordered, punct
 
 
 def get_best_slide(sl, to_max):
@@ -100,21 +103,22 @@ def get_best_slide(sl, to_max):
         if new_punct > punct:
             max_slide = slide
             punct = new_punct
-    return max_slide
+    return max_slide, new_punct
 
-def write_results( result, result_file ):
+
+def write_results(result, result_file):
     file = open(result_file, "w")
-    file.write( len(result) )
+    file.write(len(result))
     for elem in result:
-        file.write( elem[0] )
+        file.write(elem[0])
     file.close()
 
-#files = [ "a_example.txt",  "b_lovely_landscapes.txt",  "c_memorable_moments.txt",  "d_pet_pictures.txt",  "e_shiny_selfies.txt" ]
-files = [ "a_example.txt"]
+
+# files = [ "a_example.txt",  "b_lovely_landscapes.txt",  "c_memorable_moments.txt",  "d_pet_pictures.txt",  "e_shiny_selfies.txt" ]
+files = ["a_example.txt"]
 
 for file in files:
     verticals, horizontals, tags_dir, traduction_dir = read_file(file)
     vertical_slides = merge_vertical_in_slide(verticals)
     horizontals += vertical_slides
-    result = slides( horizontals )
-
+    result, punct = slides(horizontals)
