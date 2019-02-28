@@ -81,7 +81,7 @@ def merge_vertical_in_slide(verticals):
 
 
 def compare_tags(photo1, photo2):
-    common = len(set(photo1[1], photo2[1]))
+    common = len(set(photo1[1]) & set(photo2[1]))
     return len(photo1[1]) + len(photo2[1]) - common
 
 
@@ -112,6 +112,10 @@ def compare_tags(photo1, photo2):
     return len(photo1[1]) + len(photo2[1]) - common
 
 
+def common(photo1, photo2):
+    return len(set(photo1[1]) & set(photo2[1]))
+
+
 def slides(sl):
     ordered = list()
     rand_int = random.randint(0, len(sl) - 1)
@@ -130,11 +134,12 @@ def get_best_slide(sl, to_max):
     punct = -1
     max_slide = to_max
     for slide in sl:
-        new_punct = compare_tags(to_max, slide)
+        com = common(to_max, slide)
+        new_punct = min(com, len(to_max[1]) - com, len(slide[1]) - com)
         if new_punct > punct:
             max_slide = slide
             punct = new_punct
-    return max_slide, new_punct
+    return max_slide, punct
 
 
 def write_results(result, result_file):
@@ -152,7 +157,7 @@ files = ["c_memorable_moments.txt"]
 
 for file in files:
     verticals, horizontals, tags_dir, traduction_dir = read_file(file)
-    print( "file read completed")
+    print("file read completed")
     vertical_slides = merge_vertical_in_slide(verticals)
     horizontals += vertical_slides
     for i in range(0, 20):
