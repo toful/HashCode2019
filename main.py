@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import codecs
-
+import random
 
 IDphoto_tags = {}  # diccionari de ID a tags
 tags_IDphoto = {}  # dciccionari de tags a ID
@@ -13,9 +13,7 @@ ID = 1  # comptador intern de ID per cada fotos
 IDtags = 1  # comptador intern de IDS per tags de fotos
 IDtagslist = []  # llista temporal de IDs de tags
 
-
 with codecs.open('a_example.txt', encoding='utf-8', mode='r') as fileref:
-
     NPhotos = int(fileref.readline())  # nombre de fotos a llegir
 
     for line in fileref.readlines():
@@ -84,7 +82,8 @@ def compare_tags(photo1, photo2):
 
 def slides(sl):
     ordered = list()
-    ordered.append(sl[0])
+    rand_int = random.randint(0, len(sl) - 1)
+    ordered.append(sl[rand_int])
     sl.remove(ordered[0])
     while len(sl) != 0:
         slide = get_best_slide(sl, ordered[len(ordered) - 1])
@@ -95,6 +94,7 @@ def slides(sl):
 
 def get_best_slide(sl, to_max):
     punct = -1
+    max_slide = to_max
     for slide in sl:
         new_punct = compare_tags(to_max, slide)
         if new_punct > punct:
