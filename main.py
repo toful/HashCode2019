@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import codecs
-
+import random
 
 IDphoto_tags = {}  # diccionari de ID a tags
 tags_IDphoto = {}  # dciccionari de tags a ID
@@ -13,9 +13,7 @@ ID = 1  # comptador intern de ID per cada fotos
 IDtags = 1  # comptador intern de IDS per tags de fotos
 IDtagslist = []  # llista temporal de IDs de tags
 
-
 with codecs.open('a_example.txt', encoding='utf-8', mode='r') as fileref:
-
     NPhotos = int(fileref.readline())  # nombre de fotos a llegir
 
     for line in fileref.readlines():
@@ -55,19 +53,21 @@ with codecs.open('a_example.txt', encoding='utf-8', mode='r') as fileref:
     print(tags_IDphoto)
     print(IDtagtoString)
 
-def merge_vertical_in_slide( verticals ):
+
+def merge_vertical_in_slide(verticals):
     double_slides = []
     for elem1 in verticals:
-        bestScore = 0
-        bestPhoto = None
+        best_score = 0
+        best_photo = None
         verticals.remove(elem1)
         for elem2 in verticals:
             score = compare_tags(elem1, elem2)
-            if (score > bestScore):
-                bestScore = score
-                bestPhoto = elem2
-        double_slides += [(str(elem1[0]) + " " + str(bestPhoto[0]), elem1[1] + list(set(bestPhoto[1]) - set(elem1[1])))]
-        verticals.remove(bestPhoto)
+            if score > best_score:
+                best_score = score
+                best_photo = elem2
+        double_slides += [
+            (str(elem1[0]) + " " + str(best_photo[0]), elem1[1] + list(set(best_photo[1]) - set(elem1[1])))]
+        verticals.remove(best_photo)
         if len(verticals) < 2:
             break
 
@@ -79,7 +79,8 @@ def compare_tags(photo1, photo2):
 
 def slides(sl):
     ordered = list()
-    ordered.append(sl[0])
+    rand_int = random.randint(0, len(sl) - 1)
+    ordered.append(sl[rand_int])
     sl.remove(ordered[0])
     while len(sl) != 0:
         slide = get_best_slide(sl, ordered[len(ordered) - 1])
@@ -90,6 +91,7 @@ def slides(sl):
 
 def get_best_slide(sl, to_max):
     punct = -1
+    max_slide = to_max
     for slide in sl:
         new_punct = compare_tags(to_max, slide)
         if new_punct > punct:
