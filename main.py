@@ -152,6 +152,7 @@ files = ["c_memorable_moments.txt"]
 
 for file in files:
     verticals, horizontals, tags_dir, traduction_dir = read_file(file)
+    print( "file read completed")
     vertical_slides = merge_vertical_in_slide(verticals)
     horizontals += vertical_slides
     for i in range(0, 20):
