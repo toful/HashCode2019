@@ -8,7 +8,6 @@ import copy
 
 def read_file(filename):
     IDphoto_tags = {}  # diccionari de ID a tags
-    tags_IDphoto = {}  # dciccionari de tags a ID
 
     ID = 0  # comptador intern de ID per cada fotos
     IDtags = 0  # comptador intern de IDS per tags de fotos
@@ -27,12 +26,6 @@ def read_file(filename):
 
             IDphoto_tags[ID] = [orientation, IDtagslist]  # afegim orientacio i lllista de ID tags al diccionari
 
-            for i in IDtagslist:
-                if i not in tags_IDphoto.keys():
-                    tags_IDphoto[i] = [ID]
-                else:
-                    tags_IDphoto[i].append(ID)
-
             ID += 1
 
             Horizontal_list = []
@@ -43,7 +36,7 @@ def read_file(filename):
                 else:
                     Vertical_list.append([i, IDphoto_tags[i][1]])
 
-        return Vertical_list, Horizontal_list, tags_IDphoto
+        return Vertical_list, Horizontal_list
 
 
 def merge_vertical_in_slide(verticals):
@@ -117,7 +110,7 @@ files = ["d_pet_pictures.txt"]
 # read_files('a_example.txt')
 
 for file in files:
-    verticals, horizontals, tags_dir = read_file(file)
+    verticals, horizontals = read_file(file)
     print("file read completed")
     vertical_slides = merge_vertical_in_slide(verticals)
     horizontals += vertical_slides
