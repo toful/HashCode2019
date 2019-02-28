@@ -7,7 +7,6 @@ import codecs
 
 print("Hello World")
 
-<<<<<<< HEAD
 IDphoto_tags = {}  # diccionari de ID a tags
 tags_IDphoto = {}  # dciccionari de tags a ID
 
@@ -57,7 +56,8 @@ with codecs.open('a_example.txt', encoding='utf-8', mode='r') as fileref:
         ID += 1
     print(IDphoto_tags)
     print(tags_IDphoto)
-=======
+    print(IDtagtoString)
+
 def merge_vertical_in_slide( verticals ):
     double_slides = []
     for elem1 in verticals:
@@ -79,4 +79,3 @@ def merge_vertical_in_slide( verticals ):
 def compare_tags( photo1, photo2 ):
     common = len( set( photo1[1], photo2[1] ) )
     return len(photo1[1]) + len(photo2[1]) - common
->>>>>>> b4942010e7085c54dec72545a43861cb600e63f1
