@@ -55,21 +55,26 @@ with codecs.open('a_example.txt', encoding='utf-8', mode='r') as fileref:
     print(tags_IDphoto)
     print(IDtagtoString)
 
+
 def merge_vertical_in_slide( verticals ):
     double_slides = []
-    for elem1 in verticals:
-        bestScore = 0
-        bestPhoto = None
-        verticals.remove(elem1)
-        for elem2 in verticals:
-            score = compare_tags(elem1, elem2)
-            if (score > bestScore):
-                bestScore = score
-                bestPhoto = elem2
-        double_slides += [(str(elem1[0]) + " " + str(bestPhoto[0]), elem1[1] + list(set(bestPhoto[1]) - set(elem1[1])))]
-        verticals.remove(bestPhoto)
-        if len(verticals) < 2:
-            break
+    if len(verticals) >= 2:
+        for elem1 in verticals:
+            bestScore = 0
+            bestPhoto = None
+            verticals.remove(elem1)
+            for elem2 in verticals:
+                score = compare_tags(elem1, elem2)
+                if score > bestScore:
+                    bestScore = score
+                    bestPhoto = elem2
+            double_slides += [(str(elem1[0]) + " " + str(bestPhoto[0]), elem1[1] + list(set(bestPhoto[1]) - set(elem1[1])))]
+            verticals.remove(bestPhoto)
+            if len(verticals) < 2:
+                break
+    if len(verticals) == 1:
+        double_slides += [ ( str( verticals[0][0] ), verticals[0][1] )]
+    return double_slides
 
 
 def compare_tags(photo1, photo2):
@@ -97,6 +102,19 @@ def get_best_slide(sl, to_max):
             punct = new_punct
     return max_slide
 
+def write_results( result, result_file ):
+    file = open(result_file, "w")
+    file.write( len(result) )
+    for elem in result:
+        file.write( elem[0] )
+    file.close()
 
-sli = [(0, [1, 2, 3]), (1, [2, 3, 4]), (2, [1, 3, 5])]
-print(slides(sli))
+#files = [ "a_example.txt",  "b_lovely_landscapes.txt",  "c_memorable_moments.txt",  "d_pet_pictures.txt",  "e_shiny_selfies.txt" ]
+files = [ "a_example.txt"]
+
+for file in files:
+    verticals, horizontals, tags_dir, traduction_dir = read_file(file)
+    vertical_slides = merge_vertical_in_slide(verticals)
+    horizontals += vertical_slides
+    result = slides( horizontals )
+
