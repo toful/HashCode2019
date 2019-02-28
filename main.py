@@ -139,14 +139,16 @@ def write_results( result, result_file ):
     file.close()
 
 #files = [ "a_example.txt",  "b_lovely_landscapes.txt",  "c_memorable_moments.txt",  "d_pet_pictures.txt",  "e_shiny_selfies.txt" ]
-files = [ "a_example.txt"]
+files = [ "d_pet_pictures.txt" ]
 
 #read_files('a_example.txt')
 
 for file in files:
     verticals, horizontals, tags_dir, traduction_dir = read_file(file)
+    print( "file read completed")
     vertical_slides = merge_vertical_in_slide(verticals)
     horizontals += vertical_slides
+    print("lists merged")
     result = slides( horizontals )
     write_results( result, "result.out")
 
